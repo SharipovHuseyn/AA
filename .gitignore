@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Prisma
+src/generated/prisma
+
+# Build
+dist
+dist-ssr
+
+# Logs
+logs
+*.log
+
+# Local config
+*.local
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# OS
+.DS_Store

@@ -1,0 +1,235 @@
+@import "tailwindcss";
+  body {
+    font-family: 'TT Norms Pro', sans-serif;
+    background-color: #000;
+  }
+
+@theme {
+  --breakpoint-xs: 370px;
+  --breakpoint-sm-custom: 480px;
+  --breakpoint-md-custom: 576px;
+  --breakpoint-lg-custom: 768px;
+  --breakpoint-xl-custom: 992px;
+  --breakpoint-2xl-custom: 1024px;
+  --breakpoint-3xl: 1260px;
+  --breakpoint-4xl: 1440px;
+  --breakpoint-5xl: 1600px;
+  --breakpoint-6xl: 1920px;
+  
+  --color-brand-black: #1E1E1E;
+  --color-brand-light-black: #282828;
+  --color-brand-normal: #F00;
+  --color-brand-white: #FBFFFE;
+  --color-brand-dark-gray: #5E5E5E;
+}
+
+@layer base {
+  body {
+    font-family: 'TT Norms Pro', sans-serif;
+    background-color: #000;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+.card {
+  @apply bg-brand-white  transition-all duration-300 border border-brand-black rounded-xl
+}
+
+.card:hover {
+  @apply bg-brand-black -translate-y-4 scale-[0.98]
+}
+/* shadow-[4.444px_5.556px_11.111px_0_rgba(30, 30, 30, 0.50)] */
+/* font family */
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-BdIt.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-BdIt.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro ExtraBlack';
+  src: url('./assets/fonts/TTNormsPro-XBlkIt.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-XBlkIt.woff') format('woff');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-XBdIt.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-XBdIt.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-Blk.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-Blk.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-Md.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-Md.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-MdIt.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-MdIt.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro ExtraBlack';
+  src: url('./assets/fonts/TTNormsPro-XBlk.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-XBlk.woff') format('woff');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-Bd.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-Bd.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-DmBd.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-DmBd.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-BlkIt.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-BlkIt.woff') format('woff');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-DmBdIt.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-DmBdIt.woff') format('woff');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-XBd.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-XBd.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro Normal';
+  src: url('./assets/fonts/TTNormsPro-NormalIt.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-NormalIt.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-Lt.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-Lt.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-Rg.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-Rg.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-XLt.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-XLt.woff') format('woff');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro Normal';
+  src: url('./assets/fonts/TTNormsPro-Normal.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-Normal.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-Th.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-Th.woff') format('woff');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('./assets/fonts/TTNormsPro-It.woff2') format('woff2'),
+    url('./assets/fonts/TTNormsPro-It.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out forwards;
+}

@@ -1,0 +1,59 @@
+/* =====================================================
+   CONTAINER
+   ===================================================== */
+
+.headlights-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* =====================================================
+   CAR BASE (HIDDEN)
+   ===================================================== */
+
+.car {
+  max-width: 100%;
+  display: block;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  opacity: 0; /* 👈 СКРЫТА ДО СТАРТА */
+}
+
+/* =====================================================
+   PLAY STATE
+   ===================================================== */
+
+.car[data-state="play"] {
+  animation: drivingAway 2.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* =====================================================
+   KEYFRAMES
+   ===================================================== */
+
+@keyframes drivingAway {
+  0% {
+    transform: scale(3.4) translateY(55%) translateZ(240px);
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1) translateY(0) translateZ(0);
+    opacity: 1;
+  }
+}
+
+/* =====================================================
+   HEADLIGHTS OVERLAY
+   ===================================================== */
+
+.headlights-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}

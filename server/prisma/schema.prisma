@@ -1,0 +1,661 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url =  env("DATABASE_URL")
+}
+
+
+model FeedbackFormAnswer {
+  id                BigInt  @id @default(autoincrement())
+  personName        String
+  personPhone       String
+  personEmail       String?
+  typeClient        String  @default("Natural person")
+  manufacturesCar   String?
+  modelCar          String?
+  budgetCar         String?
+  policy            Boolean @default(false)
+  engineVolume      String?
+  driveType         String?
+  equipment         String?
+  bodyColor         String?
+  interiorColor     String?
+  insurancePayments String?
+  insuranceDetails  String?
+  additionalNotes   String?
+  bodyType          String?
+  fuelType          String?
+  mileageFrom       String?
+  mileageTo         String?
+  yearFrom          String?
+  yearTo            String?
+}
+
+model auth_group {
+  id                     Int                      @id @default(autoincrement())
+  name                   String                   @unique @db.VarChar(150)
+  auth_group_permissions auth_group_permissions[]
+  auth_user_groups       auth_user_groups[]
+
+  @@index([name], map: "auth_group_name_a6ea08ec_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_group_permissions {
+  id              BigInt          @id @default(autoincrement())
+  group_id        Int
+  permission_id   Int
+  auth_permission auth_permission @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_group_permissio_permission_id_84c5c92e_fk_auth_perm")
+  auth_group      auth_group      @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_group_permissions_group_id_b120cbf9_fk_auth_group_id")
+
+  @@unique([group_id, permission_id], map: "auth_group_permissions_group_id_permission_id_0cd325b0_uniq")
+  @@index([group_id], map: "auth_group_permissions_group_id_b120cbf9")
+  @@index([permission_id], map: "auth_group_permissions_permission_id_84c5c92e")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_permission {
+  id                         Int                          @id @default(autoincrement())
+  name                       String                       @db.VarChar(255)
+  content_type_id            Int
+  codename                   String                       @db.VarChar(100)
+  auth_group_permissions     auth_group_permissions[]
+  django_content_type        django_content_type          @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_permission_content_type_id_2f476e4b_fk_django_co")
+  auth_user_user_permissions auth_user_user_permissions[]
+
+  @@unique([content_type_id, codename], map: "auth_permission_content_type_id_codename_01ab375a_uniq")
+  @@index([content_type_id], map: "auth_permission_content_type_id_2f476e4b")
+}
+
+model auth_user {
+  id                         Int                          @id @default(autoincrement())
+  password                   String                       @db.VarChar(128)
+  last_login                 DateTime?                    @db.Timestamptz(6)
+  is_superuser               Boolean
+  username                   String                       @unique @db.VarChar(150)
+  first_name                 String                       @db.VarChar(150)
+  last_name                  String                       @db.VarChar(150)
+  email                      String                       @db.VarChar(254)
+  is_staff                   Boolean
+  is_active                  Boolean
+  date_joined                DateTime                     @db.Timestamptz(6)
+  auth_user_groups           auth_user_groups[]
+  auth_user_user_permissions auth_user_user_permissions[]
+  django_admin_log           django_admin_log[]
+
+  @@index([username], map: "auth_user_username_6821ab7c_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_user_groups {
+  id         BigInt     @id @default(autoincrement())
+  user_id    Int
+  group_id   Int
+  auth_group auth_group @relation(fields: [group_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_groups_group_id_97559544_fk_auth_group_id")
+  auth_user  auth_user  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_groups_user_id_6a12ed8b_fk_auth_user_id")
+
+  @@unique([user_id, group_id], map: "auth_user_groups_user_id_group_id_94350c0c_uniq")
+  @@index([group_id], map: "auth_user_groups_group_id_97559544")
+  @@index([user_id], map: "auth_user_groups_user_id_6a12ed8b")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model auth_user_user_permissions {
+  id              BigInt          @id @default(autoincrement())
+  user_id         Int
+  permission_id   Int
+  auth_permission auth_permission @relation(fields: [permission_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm")
+  auth_user       auth_user       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id")
+
+  @@unique([user_id, permission_id], map: "auth_user_user_permissions_user_id_permission_id_14a6b632_uniq")
+  @@index([permission_id], map: "auth_user_user_permissions_permission_id_1fbb5f2c")
+  @@index([user_id], map: "auth_user_user_permissions_user_id_a95ead1b")
+}
+
+model company_info {
+  id         String   @id
+  name       String
+  value      String
+  created_at DateTime @default(now())
+  updated_at DateTime
+}
+
+model deleted_items {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  item_type         String   @db.VarChar(50)
+  item_id           String   @db.VarChar(255)
+  item_data         Json
+  deleted_at        DateTime @default(now()) @db.Timestamp(6)
+  can_restore_until DateTime @db.Timestamp(6)
+
+  @@index([deleted_at], map: "idx_deleted_items_deleted_at")
+  @@index([can_restore_until], map: "idx_deleted_items_restore_until")
+  @@index([item_type], map: "idx_deleted_items_type")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model django_admin_log {
+  id                  Int                  @id @default(autoincrement())
+  action_time         DateTime             @db.Timestamptz(6)
+  object_id           String?
+  object_repr         String               @db.VarChar(200)
+  action_flag         Int                  @db.SmallInt
+  change_message      String
+  content_type_id     Int?
+  user_id             Int
+  django_content_type django_content_type? @relation(fields: [content_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "django_admin_log_content_type_id_c4bce8eb_fk_django_co")
+  auth_user           auth_user            @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "django_admin_log_user_id_c564eba6_fk_auth_user_id")
+
+  @@index([content_type_id], map: "django_admin_log_content_type_id_c4bce8eb")
+  @@index([user_id], map: "django_admin_log_user_id_c564eba6")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model django_celery_results_chordcounter {
+  id        Int    @id @default(autoincrement())
+  group_id  String @unique @db.VarChar(255)
+  sub_tasks String
+  count     Int
+
+  @@index([group_id], map: "django_celery_results_chordcounter_group_id_1f70858c_like")
+}
+
+model django_celery_results_groupresult {
+  id               Int      @id @default(autoincrement())
+  group_id         String   @unique @db.VarChar(255)
+  date_created     DateTime @db.Timestamptz(6)
+  date_done        DateTime @db.Timestamptz(6)
+  content_type     String   @db.VarChar(128)
+  content_encoding String   @db.VarChar(64)
+  result           String?
+
+  @@index([date_created], map: "django_cele_date_cr_bd6c1d_idx")
+  @@index([date_done], map: "django_cele_date_do_caae0e_idx")
+  @@index([group_id], map: "django_celery_results_groupresult_group_id_a085f1a9_like")
+}
+
+model django_celery_results_taskresult {
+  id                 Int       @id @default(autoincrement())
+  task_id            String    @unique @db.VarChar(255)
+  status             String    @db.VarChar(50)
+  content_type       String    @db.VarChar(128)
+  content_encoding   String    @db.VarChar(64)
+  result             String?
+  date_done          DateTime  @db.Timestamptz(6)
+  traceback          String?
+  meta               String?
+  task_args          String?
+  task_kwargs        String?
+  task_name          String?   @db.VarChar(255)
+  worker             String?   @db.VarChar(100)
+  date_created       DateTime  @db.Timestamptz(6)
+  periodic_task_name String?   @db.VarChar(255)
+  date_started       DateTime? @db.Timestamptz(6)
+
+  @@index([date_created], map: "django_cele_date_cr_f04a50_idx")
+  @@index([date_done], map: "django_cele_date_do_f59aad_idx")
+  @@index([periodic_task_name], map: "django_cele_periodi_1993cf_idx")
+  @@index([status], map: "django_cele_status_9b6201_idx")
+  @@index([task_name], map: "django_cele_task_na_08aec9_idx")
+  @@index([worker], map: "django_cele_worker_d54dd8_idx")
+  @@index([task_id], map: "django_celery_results_taskresult_task_id_de0d95bf_like")
+}
+
+model django_content_type {
+  id               Int                @id @default(autoincrement())
+  app_label        String             @db.VarChar(100)
+  model            String             @db.VarChar(100)
+  auth_permission  auth_permission[]
+  django_admin_log django_admin_log[]
+
+  @@unique([app_label, model], map: "django_content_type_app_label_model_76bd3d3b_uniq")
+}
+
+model django_migrations {
+  id      BigInt   @id @default(autoincrement())
+  app     String   @db.VarChar(255)
+  name    String   @db.VarChar(255)
+  applied DateTime @db.Timestamptz(6)
+}
+
+model django_session {
+  session_key  String   @id @db.VarChar(40)
+  session_data String
+  expire_date  DateTime @db.Timestamptz(6)
+
+  @@index([expire_date], map: "django_session_expire_date_a5c62663")
+  @@index([session_key], map: "django_session_session_key_c0390e0f_like")
+}
+
+model footer_nav {
+  id           Int      @id @default(autoincrement())
+  nav_item_id  Int
+  link         String   @db.VarChar(256)
+  name         String   @db.VarChar(128)
+  order_number Int
+  is_active    Boolean  @default(true)
+  created_at   DateTime @default(now()) @db.Timestamp(6)
+  updated_at   DateTime @default(now()) @db.Timestamp(6)
+  nav_item     nav_item @relation(fields: [nav_item_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_footer_nav_item")
+
+  @@index([is_active], map: "idx_footer_nav_active")
+  @@index([nav_item_id], map: "idx_footer_nav_item")
+  @@index([order_number], map: "idx_footer_nav_order")
+}
+
+model manager_link {
+  id              Int             @id @default(autoincrement())
+  manager_id      Int
+  type            String          @db.VarChar(32)
+  title           String          @db.VarChar(256)
+  subtitle        String?         @db.VarChar(256)
+  href            String          @db.VarChar(512)
+  icon            String?         @db.VarChar(256)
+  order_number    Int
+  created_at      DateTime        @default(now()) @db.Timestamp(6)
+  updated_at      DateTime        @default(now()) @db.Timestamp(6)
+  manager_profile manager_profile @relation(fields: [manager_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_manager_link_profile")
+
+  @@index([manager_id], map: "idx_manager_link_manager")
+  @@index([order_number], map: "idx_manager_link_order")
+}
+
+model manager_profile {
+  id            Int            @id @default(autoincrement())
+  slug          String         @unique @db.VarChar(128)
+  full_name     String         @db.VarChar(128)
+  role          String         @db.VarChar(256)
+  avatar_url    String         @db.VarChar(512)
+  short_bio     String
+  bullet_points String[]
+  main_phone    String         @db.VarChar(32)
+  order_number  Int
+  is_active     Boolean        @default(true)
+  created_at    DateTime       @default(now()) @db.Timestamp(6)
+  updated_at    DateTime       @default(now()) @db.Timestamp(6)
+  deleted_at    DateTime?      @db.Timestamp(6)
+  is_deleted    Boolean        @default(false)
+  manager_link  manager_link[]
+
+  @@index([is_active], map: "idx_manager_active")
+  @@index([is_deleted], map: "idx_manager_deleted")
+  @@index([order_number], map: "idx_manager_order")
+  @@index([slug], map: "idx_manager_slug")
+}
+
+model nav_item {
+  id           Int          @id @default(autoincrement())
+  link         String       @db.VarChar(256)
+  name         String       @db.VarChar(128)
+  order_number Int
+  is_active    Boolean      @default(true)
+  created_at   DateTime     @default(now()) @db.Timestamp(6)
+  updated_at   DateTime     @default(now()) @db.Timestamp(6)
+  footer_nav   footer_nav[]
+
+  @@index([is_active], map: "idx_nav_item_active")
+  @@index([order_number], map: "idx_nav_item_order")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model parser_car {
+  id                     BigInt                  @id(map: "parser_foreigncar_pkey") @default(autoincrement())
+  encar_id               BigInt                  @unique(map: "parser_car_encar_id_0b7d8e13_uniq")
+  url                    String                  @db.VarChar(200)
+  inspection             Boolean
+  record                 Boolean
+  resume                 Boolean
+  manufacturer_id        BigInt?
+  model                  String?                 @db.VarChar(128)
+  version                String?                 @db.VarChar(128)
+  version_details        String?                 @db.VarChar(128)
+  transmission           String                  @db.VarChar(128)
+  release_date           Int
+  mileage                Int
+  price                  BigInt
+  sell_type              String                  @db.VarChar(128)
+  updated                DateTime                @db.Timestamptz(6)
+  city                   String                  @db.VarChar(128)
+  fuel_type_id           BigInt?
+  model_year             Int
+  color_id               BigInt?
+  engine_capacity        Int?
+  options                String?                 @db.VarChar(1024)
+  korean_number          String?                 @db.VarChar(32)
+  dummy_id               Int?
+  encar_diag             Int?
+  ru_price               Int?
+  customs_duty           Int?
+  recycling_fee          Int?
+  body_name_id           BigInt?
+  is_valid               Boolean
+  final_price            Int?
+  hp                     Int
+  final_price_rub        Int?
+  hp_in_kw               Float
+  kw                     Float
+  parser_carbody         parser_carbody?         @relation(fields: [body_name_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_car_body_name_id_cd3c43bb_fk_parser_carbody_id")
+  parser_carcolor        parser_carcolor?        @relation(fields: [color_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_car_color_id_69c70f0a_fk_parser_carcolor_id")
+  parser_carfuel         parser_carfuel?         @relation(fields: [fuel_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_car_fuel_type_id_b4422fd6_fk_parser_carfuel_id")
+  parser_carmanufacturer parser_carmanufacturer? @relation(fields: [manufacturer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_car_manufacturer_id_8127a57b_fk_parser_ca")
+  parser_cardiagnosis    parser_cardiagnosis?
+  parser_carphoto        parser_carphoto[]
+  parser_carrecord       parser_carrecord?
+
+  @@index([body_name_id, model_year], map: "parser_car_body_na_74a38c_idx")
+  @@index([body_name_id], map: "parser_car_body_name_id_cd3c43bb")
+  @@index([color_id], map: "parser_car_color_56b66bf1")
+  @@index([dummy_id], map: "parser_car_dummy_id_cfa80feb")
+  @@index([engine_capacity], map: "parser_car_engine_capacity_02e910c7")
+  @@index([final_price])
+  @@index([fuel_type_id], map: "parser_car_fuel_type_d4e95e46")
+  @@index([manufacturer_id, model], map: "parser_car_manufac_f55022_idx")
+  @@index([manufacturer_id], map: "parser_car_manufacturer_id_8127a57b")
+  @@index([mileage], map: "parser_car_mileage_a3fe70ef")
+  @@index([release_date], map: "parser_car_release_date_5380009e")
+  @@index([transmission], map: "parser_car_transmission_b65d4048")
+  @@index([transmission], map: "parser_car_transmission_b65d4048_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model parser_caraccident {
+  id                BigInt           @id(map: "parser_accident_pkey") @default(autoincrement())
+  type_of_accident  String           @db.VarChar(1)
+  date              DateTime         @db.Date
+  insurance_benefit Int
+  part_cost         Int
+  labor_cost        Int
+  painting_cost     Int
+  car_record_id     BigInt
+  parser_carrecord  parser_carrecord @relation(fields: [car_record_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_accident_car_record_id_963593ca_fk_parser_carrecord_id")
+
+  @@index([car_record_id], map: "parser_accident_car_record_id_963593ca")
+}
+
+model parser_carbody {
+  id         BigInt       @id @default(autoincrement())
+  value_key  String       @unique @db.VarChar(32)
+  value_name String       @unique @db.VarChar(32)
+  parser_car parser_car[]
+
+  @@index([value_key], map: "parser_carbody_value_key_0add9d85_like")
+  @@index([value_name], map: "parser_carbody_value_name_893bb5f8_like")
+}
+
+model parser_carcolor {
+  id         BigInt       @id @default(autoincrement())
+  value_key  String       @unique @db.VarChar(32)
+  value_name String       @unique @db.VarChar(32)
+  parser_car parser_car[]
+
+  @@index([value_key], map: "parser_carcolor_value_key_3abc4776_like")
+  @@index([value_name], map: "parser_carcolor_value_name_e2324b05_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model parser_cardiagnosis {
+  id                 BigInt      @id(map: "parser_diagnosis_pkey") @default(autoincrement())
+  left_front_door    String      @db.VarChar(16)
+  left_back_door     String      @db.VarChar(16)
+  right_front_door   String      @db.VarChar(16)
+  right_back_door    String      @db.VarChar(16)
+  trunk              String      @db.VarChar(16)
+  hood               String      @db.VarChar(16)
+  front_fender_right String      @db.VarChar(16)
+  front_fender_left  String      @db.VarChar(16)
+  car_id             BigInt?     @unique(map: "parser_diagnosis_car_id_4d6b2e19_uniq")
+  parser_car         parser_car? @relation(fields: [car_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_diagnosis_car_id_4d6b2e19_fk_parser_car_id")
+}
+
+model parser_carfuel {
+  id         BigInt       @id @default(autoincrement())
+  value_key  String       @unique @db.VarChar(32)
+  value_name String       @unique @db.VarChar(32)
+  parser_car parser_car[]
+
+  @@index([value_key], map: "parser_carfuel_value_key_09909210_like")
+  @@index([value_name], map: "parser_carfuel_value_name_3d7f298b_like")
+}
+
+model parser_carmanufacturer {
+  id         BigInt       @id @default(autoincrement())
+  value_key  String       @unique @db.VarChar(32)
+  value_name String       @unique @db.VarChar(32)
+  car_count  Int?
+  is_foreign Boolean
+  name       String       @db.VarChar(32)
+  parser_car parser_car[]
+  stock_car  stock_car[]
+
+  @@index([value_key], map: "parser_carmanufacturer_value_key_968eb187_like")
+  @@index([value_name], map: "parser_carmanufacturer_value_name_8af1afab_like")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model parser_caroption {
+  id                    BigInt                @id(map: "parser_caroption_pkey1") @default(autoincrement())
+  encar_id              String                @db.VarChar(3)
+  name                  String                @db.VarChar(128)
+  category_id           BigInt
+  parser_optioncategory parser_optioncategory @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_caroption_category_id_687c1dfa_fk_parser_op")
+
+  @@index([category_id], map: "parser_caroption_category_id_687c1dfa")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model parser_carphoto {
+  id           BigInt     @id @default(autoincrement())
+  order_number Int
+  link         String     @db.VarChar(256)
+  car_id       BigInt
+  parser_car   parser_car @relation(fields: [car_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_carphoto_car_id_645ecf84_fk_parser_car_id")
+
+  @@index([car_id], map: "parser_carphoto_car_id_645ecf84")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model parser_carrecord {
+  id                    BigInt               @id @default(autoincrement())
+  owner_count           Int
+  other_accident_cost   Int
+  other_accident_count  Int
+  driver_accident_cost  Int
+  driver_accident_count Int
+  car_id                BigInt               @unique
+  parser_caraccident    parser_caraccident[]
+  parser_car            parser_car           @relation(fields: [car_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_carrecord_car_id_9d438518_fk_parser_car_id")
+}
+
+model parser_config {
+  id              BigInt @id @default(autoincrement())
+  delivery_cost   Int
+  extra_expenses  Int
+  rate            Int
+  asia_services   Int
+  dealer_services Int
+  korea_invoice   Int
+  broker_cost     Int
+}
+
+model parser_horsepower {
+  id              BigInt  @id @default(autoincrement())
+  hp              Int
+  engine_capacity String? @db.VarChar(128)
+  model           String? @db.VarChar(128)
+  model_year      String? @db.VarChar(128)
+  value_name      String? @db.VarChar(128)
+  version         String? @db.VarChar(128)
+  hp_in_kw        Float
+  kw              Float
+
+  @@index([engine_capacity], map: "parser_horsepower_engine_capacity_52798c04")
+  @@index([engine_capacity], map: "parser_horsepower_engine_capacity_52798c04_like")
+  @@index([model], map: "parser_horsepower_model_665b2ac7")
+  @@index([model], map: "parser_horsepower_model_665b2ac7_like")
+  @@index([model_year], map: "parser_horsepower_model_year_ac82fe9f")
+  @@index([model_year], map: "parser_horsepower_model_year_ac82fe9f_like")
+  @@index([value_name], map: "parser_horsepower_value_name_fe6508bd")
+  @@index([value_name], map: "parser_horsepower_value_name_fe6508bd_like")
+  @@index([version], map: "parser_horsepower_version_8c91f539")
+  @@index([version], map: "parser_horsepower_version_8c91f539_like")
+}
+
+model parser_optioncategory {
+  id                 BigInt               @id @default(autoincrement())
+  name               String               @db.VarChar(64)
+  vechile            String               @db.VarChar(5)
+  parser_caroption   parser_caroption[]
+  parser_truckoption parser_truckoption[]
+}
+
+model parser_truck {
+  id                    BigInt                 @id @default(autoincrement())
+  encar_id              BigInt                 @unique
+  url                   String                 @db.VarChar(200)
+  inspection            Boolean
+  record                Boolean
+  resume                Boolean
+  manufacturer          String?                @db.VarChar(128)
+  model                 String?                @db.VarChar(128)
+  version               String?                @db.VarChar(128)
+  version_details       String?                @db.VarChar(128)
+  capacity              String                 @db.VarChar(32)
+  transmission          String                 @db.VarChar(128)
+  fuel_type             String                 @db.VarChar(2)
+  release_date          Int
+  model_year            Int
+  mileage               Int
+  price                 BigInt
+  usage                 String                 @db.VarChar(128)
+  updated               DateTime               @db.Timestamptz(6)
+  city                  String                 @db.VarChar(128)
+  color                 String?                @db.VarChar(128)
+  engine_capacity       Int?
+  horse_power           Int?
+  options               String?                @db.VarChar(1024)
+  korean_number         String?                @db.VarChar(32)
+  dummy_id              Int?
+  encar_diag            Int?
+  parser_truckdiagnosis parser_truckdiagnosis?
+  parser_truckphoto     parser_truckphoto[]
+
+  @@index([dummy_id], map: "parser_truck_dummy_id_8b209995")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model parser_truckdiagnosis {
+  id                 BigInt        @id @default(autoincrement())
+  left_front_door    String        @db.VarChar(16)
+  left_back_door     String        @db.VarChar(16)
+  right_front_door   String        @db.VarChar(16)
+  right_back_door    String        @db.VarChar(16)
+  trunk              String        @db.VarChar(16)
+  hood               String        @db.VarChar(16)
+  front_fender_right String        @db.VarChar(16)
+  front_fender_left  String        @db.VarChar(16)
+  car_id             BigInt?       @unique
+  parser_truck       parser_truck? @relation(fields: [car_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_truckdiagnosis_car_id_a181d247_fk_parser_truck_id")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model parser_truckoption {
+  id                    BigInt                @id @default(autoincrement())
+  encar_id              String                @db.VarChar(3)
+  name                  String                @db.VarChar(128)
+  category_id           BigInt
+  parser_optioncategory parser_optioncategory @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_truckoption_category_id_6f9e6917_fk_parser_op")
+
+  @@index([category_id], map: "parser_truckoption_category_id_6f9e6917")
+}
+
+/// This model has constraints using non-default deferring rules and requires additional setup for migrations. Visit https://pris.ly/d/constraint-deferring for more info.
+model parser_truckphoto {
+  id           BigInt       @id @default(autoincrement())
+  order_number Int
+  link         String       @db.VarChar(256)
+  truck_id     BigInt
+  parser_truck parser_truck @relation(fields: [truck_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "parser_truckphoto_truck_id_92a05e65_fk_parser_truck_id")
+
+  @@index([truck_id], map: "parser_truckphoto_truck_id_92a05e65")
+}
+
+model portfolio_entry {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sold_price   Int?
+  client_name  String?   @db.VarChar(128)
+  notes        String?   @db.VarChar(500)
+  created_at   DateTime  @default(now()) @db.Timestamp(6)
+  brand        String    @db.VarChar(128)
+  color        String?   @db.VarChar(128)
+  deleted_at   DateTime? @db.Timestamp(6)
+  description  String?   @db.VarChar(400)
+  drive_type   String?   @db.VarChar(128)
+  fuel_type    String?   @db.VarChar(128)
+  is_deleted   Boolean   @default(false)
+  is_top_price Boolean   @default(false)
+  mileage      Int
+  model        String    @db.VarChar(128)
+  photos       String[]
+  price        Int
+  sold_at      DateTime  @default(now()) @db.Timestamp(6)
+  subtitle     String?   @db.VarChar(256)
+  transmission String?   @db.VarChar(128)
+  year         Int
+
+  @@index([created_at], map: "idx_portfolio_created")
+  @@index([is_deleted], map: "idx_portfolio_deleted")
+  @@index([is_top_price], map: "idx_portfolio_top_price")
+}
+
+model stock_car {
+  id                     String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  manufacturer_id        BigInt
+  model                  String                 @db.VarChar(128)
+  year                   Int
+  price                  Int
+  mileage                Int
+  description            String?                @db.VarChar(400)
+  status                 String                 @default("in_stock") @db.VarChar(20)
+  created_at             DateTime               @default(now()) @db.Timestamp(6)
+  updated_at             DateTime               @default(now()) @db.Timestamp(6)
+  sold_at                DateTime?              @db.Timestamp(6)
+  ask_manager            Boolean                @default(false)
+  color                  String?                @db.VarChar(128)
+  deleted_at             DateTime?              @db.Timestamp(6)
+  drive_type             String?                @db.VarChar(128)
+  fuel_type              String?                @db.VarChar(128)
+  is_deleted             Boolean                @default(false)
+  subtitle               String?                @db.VarChar(256)
+  transmission           String?                @db.VarChar(128)
+  parser_carmanufacturer parser_carmanufacturer @relation(fields: [manufacturer_id], references: [id], onUpdate: NoAction, map: "fk_stock_car_manufacturer")
+  stock_car_photo        stock_car_photo[]
+
+  @@index([created_at], map: "idx_stock_car_created")
+  @@index([is_deleted], map: "idx_stock_car_deleted")
+  @@index([manufacturer_id], map: "idx_stock_car_manufacturer")
+  @@index([status], map: "idx_stock_car_status")
+}
+
+model stock_car_photo {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  stock_car_id String?    @db.Uuid
+  portfolio_id String?    @db.Uuid
+  file_path    String     @db.VarChar(256)
+  order_number Int
+  created_at   DateTime   @default(now()) @db.Timestamp(6)
+  stock_car    stock_car? @relation(fields: [stock_car_id], references: [id], onDelete: Cascade)
+
+  @@index([stock_car_id], map: "idx_stock_photo_car")
+  @@index([order_number], map: "idx_stock_photo_order")
+  @@index([portfolio_id], map: "idx_stock_photo_portfolio")
+}
