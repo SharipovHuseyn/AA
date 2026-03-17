@@ -40,7 +40,7 @@ export default function Car() {
 
     setSimilarLoading(true);
     fetch(
-      `http://31.177.82.93/api/cars?manufacturer=${car.manufacturerKey}&limit=10`,
+      `http://31-177-82-93.vps-ptr.clients.spaceweb.ru/api/cars?manufacturer=${car.manufacturerKey}&limit=10`,
     )
       .then((res) => res.json())
       .then((data) => {
